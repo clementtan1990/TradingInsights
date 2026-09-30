@@ -442,7 +442,7 @@ def build_dashboard_html(panel: pd.DataFrame, metrics_table: pd.DataFrame):
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Paulsen FCI Dashboard</title>
+    <title>Insights Dashboard</title>
     <style>
         body {{
             font-family: Arial, sans-serif;
