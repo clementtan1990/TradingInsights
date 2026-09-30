@@ -86,7 +86,7 @@ def load_raw_data() -> pd.DataFrame:
 
 def build_paulsen_fci(raw: pd.DataFrame):
     """
-    Replicates Paulsen-style FCI:
+    Replicates Paulsen FCI:
     8 components, each counted as restrictive or not.
 
     Restrictive if:
@@ -281,7 +281,7 @@ def plot_fci_vs_nasdaq(panel: pd.DataFrame):
 
     recession_patch = mpatches.Patch(color="grey", alpha=0.22, label="NBER recession")
 
-    ax1.set_title("Paulsen-style FCI vs Nasdaq 100")
+    ax1.set_title("Financial Conditions Index vs Nasdaq 100")
     ax1.set_ylabel("FCI count")
     ax1.set_ylim(-0.25, 8.25)
     ax1.grid(True, alpha=0.3)
@@ -510,7 +510,7 @@ def build_dashboard_html(panel: pd.DataFrame, metrics_table: pd.DataFrame):
 </head>
 <body>
 
-<h1>Paulsen-style FCI Dashboard</h1>
+<h1>Financial Conditions Index Dashboard</h1>
 <p>Last updated: {datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")}</p>
 
 <div class="card">
