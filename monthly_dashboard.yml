@@ -1,0 +1,39 @@
+name: Refresh FCI Dashboard
+
+on:
+  schedule:
+    - cron: "0 1 20 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build dashboard
+        run: python paulsenFCI.py
+
+      - name: Commit updated dashboard files
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add docs/
+          git commit -m "Refresh FCI dashboard" || echo "No changes to commit"
+          git push
