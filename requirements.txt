@@ -1,0 +1,4 @@
+fredapi
+pandas
+numpy
+matplotlib
