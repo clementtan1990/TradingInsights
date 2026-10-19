@@ -335,7 +335,7 @@ def plot_drawdown(panel: pd.DataFrame):
 
     ax.plot(data.index, data["strategy_dd"], label="FCI + 10MMA Nasdaq/Cash")
     ax.plot(data.index, data["ndx_dd"], label="Nasdaq 100")
-    ax.plot(data.index, data["spx_dd"], label="S&P 500")
+    # ax.plot(data.index, data["spx_dd"], label="S&P 500")
 
     ax.set_title("Drawdown")
     ax.set_ylabel("Drawdown")
