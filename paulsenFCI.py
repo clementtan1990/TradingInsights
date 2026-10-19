@@ -164,14 +164,14 @@ def build_strategy_panel(df: pd.DataFrame, indicator: pd.Series) -> pd.DataFrame
         {
             "fci": indicator,
             "nasdaq100": df["nasdaq100"],
-            "sp500": df["sp500"],
+            #"sp500": df["sp500"],
             "recessions": df["recessions"],
         },
         axis=1,
     ).sort_index().ffill()
 
     panel["ndx_ret"] = panel["nasdaq100"].pct_change()
-    panel["spx_ret"] = panel["sp500"].pct_change()
+    # panel["spx_ret"] = panel["sp500"].pct_change()
 
     panel["ndx_10mma"] = panel["nasdaq100"].rolling(10, min_periods=10).mean()
     panel["trend_ok"] = panel["nasdaq100"] > panel["ndx_10mma"]
@@ -186,11 +186,11 @@ def build_strategy_panel(df: pd.DataFrame, indicator: pd.Series) -> pd.DataFrame
 
     panel["strategy_equity"] = (1 + panel["strategy_ret"].fillna(0)).cumprod()
     panel["ndx_equity"] = (1 + panel["ndx_ret"].fillna(0)).cumprod()
-    panel["spx_equity"] = (1 + panel["spx_ret"].fillna(0)).cumprod()
+    # panel["spx_equity"] = (1 + panel["spx_ret"].fillna(0)).cumprod()
 
     panel["strategy_dd"] = panel["strategy_equity"] / panel["strategy_equity"].cummax() - 1
     panel["ndx_dd"] = panel["ndx_equity"] / panel["ndx_equity"].cummax() - 1
-    panel["spx_dd"] = panel["spx_equity"] / panel["spx_equity"].cummax() - 1
+    # panel["spx_dd"] = panel["spx_equity"] / panel["spx_equity"].cummax() - 1
 
     return panel
 
@@ -307,13 +307,14 @@ def plot_fci_vs_nasdaq(panel: pd.DataFrame):
 
 
 def plot_strategy_equity(panel: pd.DataFrame):
-    data = panel.dropna(subset=["strategy_equity", "ndx_equity", "spx_equity"]).copy()
+    # data = panel.dropna(subset=["strategy_equity", "ndx_equity", "spx_equity"]).copy()
+    data = panel.dropna(subset=["strategy_equity", "ndx_equity"]).copy()
 
     fig, ax = plt.subplots(figsize=(14, 6))
 
     ax.plot(data.index, data["strategy_equity"], label="FCI + 10MMA Nasdaq/Cash")
     ax.plot(data.index, data["ndx_equity"], label="Buy & Hold Nasdaq 100")
-    ax.plot(data.index, data["spx_equity"], label="Buy & Hold S&P 500")
+    # ax.plot(data.index, data["spx_equity"], label="Buy & Hold S&P 500")
 
     ax.set_yscale("log")
     ax.set_title("Strategy Equity Curve")
@@ -327,7 +328,8 @@ def plot_strategy_equity(panel: pd.DataFrame):
 
 
 def plot_drawdown(panel: pd.DataFrame):
-    data = panel.dropna(subset=["strategy_dd", "ndx_dd", "spx_dd"]).copy()
+    # data = panel.dropna(subset=["strategy_dd", "ndx_dd", "spx_dd"]).copy()
+    data = panel.dropna(subset=["strategy_dd", "ndx_dd"]).copy()
 
     fig, ax = plt.subplots(figsize=(14, 5))
 
@@ -346,7 +348,8 @@ def plot_drawdown(panel: pd.DataFrame):
 
 
 def plot_forward_returns_by_quartile(panel: pd.DataFrame):
-    data = panel.dropna(subset=["fci", "nasdaq100", "sp500"]).copy()
+    # data = panel.dropna(subset=["fci", "nasdaq100", "sp500"]).copy()
+    data = panel.dropna(subset=["fci", "nasdaq100"]).copy()
 
     q1, q2, q3 = data["fci"].quantile([0.25, 0.50, 0.75])
 
@@ -605,10 +608,10 @@ def main():
             panel["ndx_ret"],
             panel["ndx_equity"],
         ),
-        "Buy & Hold S&P 500": calc_metrics(
-            panel["spx_ret"],
-            panel["spx_equity"],
-        ),
+        # "Buy & Hold S&P 500": calc_metrics(
+        #     panel["spx_ret"],
+        #     panel["spx_equity"],
+        # ),
     }
 
     metrics_table = pd.DataFrame(metrics).T
