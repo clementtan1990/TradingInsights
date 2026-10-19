@@ -1,5 +1,9 @@
 name: Refresh FCI Dashboard
 
+concurrency:
+  group: tradinginsights-dashboard
+  cancel-in-progress: false
+
 on:
   schedule:
     - cron: "0 1 20 * *"   # 9am Singapore time on the 20th of every month
